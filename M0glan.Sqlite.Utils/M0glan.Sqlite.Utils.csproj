@@ -8,8 +8,4 @@
     <PackageReference Include="Microsoft.Data.Sqlite.Core" Version="6.0.7" />
     <PackageReference Include="SQLitePCLRaw.bundle_e_sqlcipher" Version="2.1.0" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="SqliteExceptionErrorCodes.cs.fs" />
-    <Compile Include="SqliteErrorCodes.cs.fs" />
-  </ItemGroup>
 </Project>
