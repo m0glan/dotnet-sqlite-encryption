@@ -1,6 +1,6 @@
 using Microsoft.Data.Sqlite;
 
-namespace M0glan.Sqlite.Utils.Test;
+namespace M0glan.Sqlite.Encryption.Test;
 
 public static class TestUtils
 {

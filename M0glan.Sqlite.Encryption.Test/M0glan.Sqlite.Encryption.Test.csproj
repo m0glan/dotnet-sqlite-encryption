@@ -22,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\M0glan.Sqlite.Utils\M0glan.Sqlite.Utils.csproj" />
+    <ProjectReference Include="..\M0glan.Sqlite.Encryption\M0glan.Sqlite.Encryption.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,4 +1,4 @@
-namespace M0glan.Sqlite.Utils;
+namespace M0glan.Sqlite.Encryption;
 
 using Microsoft.Data.Sqlite;
 
