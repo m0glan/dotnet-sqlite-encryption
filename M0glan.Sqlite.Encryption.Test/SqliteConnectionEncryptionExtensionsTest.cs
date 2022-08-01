@@ -10,7 +10,11 @@ namespace M0glan.Sqlite.Encryption.Test
             string password = "Secret123";
 
             string? dataSource = TestUtils.GenerateTestFileName(string.Empty, "db3");
-            string connectionString = new SqliteConnectionStringBuilder() { DataSource = dataSource, Mode = SqliteOpenMode.ReadWriteCreate }.ConnectionString;
+            string connectionString = new SqliteConnectionStringBuilder() 
+            { 
+                DataSource = dataSource, 
+                Mode = SqliteOpenMode.ReadWriteCreate 
+            }.ConnectionString;
 
             using (var connection = new SqliteConnection(connectionString))
             {
@@ -18,28 +22,50 @@ namespace M0glan.Sqlite.Encryption.Test
                 connection.SetPassword(password);
             }
 
-            connectionString = new SqliteConnectionStringBuilder() { DataSource = dataSource, Mode = SqliteOpenMode.ReadWrite }.ConnectionString;
+            SqliteConnectionStringAssert.DoesNotOpenConnection(dataSource, "");
+            SqliteConnectionStringAssert.DoesNotOpenConnection(dataSource, "xyz123");
+            SqliteConnectionStringAssert.OpensConnection(dataSource, password);
+        }
+
+        [Fact]
+        public void SetPassword_Should_ChangePassword()
+        {
+            string password = "Secret123";
+
+            string? dataSource = TestUtils.GenerateTestFileName(string.Empty, "db3");
+            string connectionString = new SqliteConnectionStringBuilder() 
+            { 
+                DataSource = dataSource, 
+                Mode = SqliteOpenMode.ReadWriteCreate 
+            }.ConnectionString;
 
             using (var connection = new SqliteConnection(connectionString))
             {
                 connection.Open();
-                Assert.False(connection.Test());
-            }
-            
-            connectionString = new SqliteConnectionStringBuilder() { DataSource = dataSource, Password = "xyz123" }.ConnectionString;
-            using (var connection = new SqliteConnection(connectionString))
-            {
-                var exception = Assert.Throws<SqliteException>(() => connection.Open());
-                Assert.True(exception is SqliteException);
-                Assert.Equal(SqliteErrorCodes.NOT_A_DB, exception.SqliteErrorCode);
+                connection.SetPassword(password);
             }
 
-            connectionString = new SqliteConnectionStringBuilder() { DataSource = dataSource, Password = password }.ConnectionString;
+            SqliteConnectionStringAssert.DoesNotOpenConnection(dataSource);
+            SqliteConnectionStringAssert.DoesNotOpenConnection(dataSource, "xyz123");
+            SqliteConnectionStringAssert.OpensConnection(dataSource, password);
+
+            string newPassword = "xyz123";
+
+            connectionString = new SqliteConnectionStringBuilder() 
+            { 
+                DataSource = dataSource,
+                Password = password,
+                Mode = SqliteOpenMode.ReadWriteCreate 
+            }.ConnectionString;
             using (var connection = new SqliteConnection(connectionString))
             {
                 connection.Open();
-                Assert.True(connection.Test());
+                connection.SetPassword(newPassword);
             }
+
+            SqliteConnectionStringAssert.DoesNotOpenConnection(dataSource);
+            SqliteConnectionStringAssert.DoesNotOpenConnection(dataSource, password);
+            SqliteConnectionStringAssert.OpensConnection(dataSource, newPassword);
         }
 
         [Fact]
@@ -48,7 +74,11 @@ namespace M0glan.Sqlite.Encryption.Test
             string password = "Secret123";
 
             string? dataSource = TestUtils.GenerateTestFileName(string.Empty, "db3");
-            string connectionString = new SqliteConnectionStringBuilder() { DataSource = dataSource, Mode = SqliteOpenMode.ReadWriteCreate }.ConnectionString;
+            string connectionString = new SqliteConnectionStringBuilder() 
+            { 
+                DataSource = dataSource, 
+                Mode = SqliteOpenMode.ReadWriteCreate 
+            }.ConnectionString;
 
             using (var connection = new SqliteConnection(connectionString))
             {
@@ -56,28 +86,50 @@ namespace M0glan.Sqlite.Encryption.Test
                 await connection.SetPasswordAsync(password);
             }
 
-            connectionString = new SqliteConnectionStringBuilder() { DataSource = dataSource, Mode = SqliteOpenMode.ReadWrite }.ConnectionString;
+            SqliteConnectionStringAssert.DoesNotOpenConnection(dataSource, "");
+            SqliteConnectionStringAssert.DoesNotOpenConnection(dataSource, "xyz123");
+            SqliteConnectionStringAssert.OpensConnection(dataSource, password);
+        }
+
+        [Fact]
+        public async Task SetPasswordAsync_Should_ChangePassword()
+        {
+            string password = "Secret123";
+
+            string? dataSource = TestUtils.GenerateTestFileName(string.Empty, "db3");
+            string connectionString = new SqliteConnectionStringBuilder() 
+            { 
+                DataSource = dataSource, 
+                Mode = SqliteOpenMode.ReadWriteCreate 
+            }.ConnectionString;
 
             using (var connection = new SqliteConnection(connectionString))
             {
                 await connection.OpenAsync();
-                Assert.False(await connection.TestAsync());
-            }
-            
-            connectionString = new SqliteConnectionStringBuilder() { DataSource = dataSource, Password = "xyz123" }.ConnectionString;
-            using (var connection = new SqliteConnection(connectionString))
-            {
-                var exception = await Assert.ThrowsAsync<SqliteException>(async () => await connection.OpenAsync());
-                Assert.True(exception is SqliteException);
-                Assert.Equal(SqliteErrorCodes.NOT_A_DB, exception.SqliteErrorCode);
+                await connection.SetPasswordAsync(password);
             }
 
-            connectionString = new SqliteConnectionStringBuilder() { DataSource = dataSource, Password = password }.ConnectionString;
+            SqliteConnectionStringAssert.DoesNotOpenConnection(dataSource);
+            SqliteConnectionStringAssert.DoesNotOpenConnection(dataSource, "xyz123");
+            SqliteConnectionStringAssert.OpensConnection(dataSource, password);
+
+            string newPassword = "xyz123";
+
+            connectionString = new SqliteConnectionStringBuilder() 
+            { 
+                DataSource = dataSource,
+                Password = password,
+                Mode = SqliteOpenMode.ReadWriteCreate 
+            }.ConnectionString;
             using (var connection = new SqliteConnection(connectionString))
             {
                 await connection.OpenAsync();
-                Assert.True(await connection.TestAsync());
+                await connection.SetPasswordAsync(newPassword);
             }
+
+            SqliteConnectionStringAssert.DoesNotOpenConnection(dataSource);
+            SqliteConnectionStringAssert.DoesNotOpenConnection(dataSource, password);
+            SqliteConnectionStringAssert.OpensConnection(dataSource, newPassword);
         }
     }
 }

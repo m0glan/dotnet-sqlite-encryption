@@ -42,3 +42,52 @@ public static class SqliteConnectionTestExtensions
         await command.ExecuteNonQueryAsync();
     }
 }
+
+public static class SqliteConnectionStringAssert
+{       
+    public static void OpensConnection(string? dataSource, string? password = "")
+    {
+        string failMessage = "The dataSource/password combination failed to open the database.";
+
+        string connectionString = new SqliteConnectionStringBuilder() 
+        { 
+            DataSource = dataSource, 
+            Password = password,
+            Mode = SqliteOpenMode.ReadOnly
+        }.ConnectionString;
+        using var connection = new SqliteConnection(connectionString);
+
+        try
+        {
+            connection.Open();
+            Assert.True(connection.Test(), failMessage);
+        }
+        catch (SqliteException e)
+        {
+            Assert.False(e.SqliteErrorCode == SqliteErrorCodes.NOT_A_DB, failMessage);
+        }
+    }
+
+    public static void DoesNotOpenConnection(string? dataSource, string? password = "")
+    {
+        string failMessage = "The dataSource/password opened the connection but should have failed.";
+
+        string connectionString = new SqliteConnectionStringBuilder() 
+        { 
+            DataSource = dataSource, 
+            Password = password,
+            Mode = SqliteOpenMode.ReadOnly
+        }.ConnectionString;
+        using var connection = new SqliteConnection(connectionString);
+
+        try
+        {
+            connection.Open();
+            Assert.False(connection.Test(), failMessage);
+        }
+        catch (SqliteException e)
+        {
+            Assert.True(e.SqliteErrorCode == SqliteErrorCodes.NOT_A_DB, failMessage);
+        }
+    }
+}
