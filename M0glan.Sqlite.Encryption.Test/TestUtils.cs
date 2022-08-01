@@ -1,6 +1,6 @@
-using Microsoft.Data.Sqlite;
-
 namespace M0glan.Sqlite.Encryption.Test;
+
+using Microsoft.Data.Sqlite;
 
 public static class TestUtils
 {
@@ -33,13 +33,6 @@ public static class SqliteConnectionTestExtensions
         using SqliteCommand insertRecordCommand = connection.CreateCommand();
         insertRecordCommand.CommandText = "INSERT INTO TestTable VALUES (1)";
         insertRecordCommand.ExecuteNonQuery();
-    }
-
-    public static async Task WriteAsync(this SqliteConnection connection)
-    {
-        using SqliteCommand command = connection.CreateCommand();
-        command.CommandText = "CREATE TABLE TestTable (Id INT PRIMARY KEY)";
-        await command.ExecuteNonQueryAsync();
     }
 }
 
