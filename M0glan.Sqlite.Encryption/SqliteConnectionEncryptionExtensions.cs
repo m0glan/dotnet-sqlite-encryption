@@ -8,7 +8,7 @@ public static class SqliteConnectionEncryptionExtensions
 
     /// <summary>
     /// Sets the encryption key for a SQLite database to the value of the password parameter. 
-    /// This only works to set the password on a fresh database (that has never been written to).
+    /// This only works on an empty database.
     /// </summary>
     /// <param name="connection">The target connection.</param>
     /// <param name="password">The encryption key.</param>
@@ -32,7 +32,7 @@ public static class SqliteConnectionEncryptionExtensions
 
     /// <summary>
     /// Sets the encryption key for a SQLite database to the value of the password parameter. 
-    /// This only works to set the password on a fresh database (that has never been written to).
+    /// This only works on an empty database.
     /// </summary>
     /// <param name="connection">The target connection.</param>
     /// <param name="password">The encryption key.</param>
