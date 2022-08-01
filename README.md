@@ -1,2 +1,2 @@
-# dotnet-sqlite-encryption
-A set of utilities for making it easier to encrypt a SQLite database with SQLCipher in .NET.
+# .NET SQLite Encryption
+This library aims to provide a set of SQLite database encryption-related utilities and `Microsoft.Data.Sqlite.SqliteConnection` extension methods in .NET. The tools are built around [SQLCipher](https://www.zetetic.net/sqlcipher/about/).
