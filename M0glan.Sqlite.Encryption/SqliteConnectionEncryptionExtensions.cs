@@ -63,6 +63,14 @@ public static class SqliteConnectionEncryptionExtensions
         return command;
     }
 
+    /// <summary>
+    /// Tries to perform a read operation using the connection to check whether its data source
+    /// is a valid SQLite database file or if the the database file was successfully decrypted.
+    /// 
+    /// <seealso href="https://www.zetetic.net/sqlcipher/sqlcipher-api/#PRAGMA_key" />
+    /// </summary>
+    /// <param name="connection">The connection to be tested.</param>
+    /// <returns>False if the read operation throws <see cref="SqliteException" /> with SQLite error code 26 (SQLITE_NOTADB), true otherwise.</returns>
     public static bool Test(this SqliteConnection connection)
     {
         try 
@@ -77,6 +85,14 @@ public static class SqliteConnectionEncryptionExtensions
         }
     }
 
+    /// <summary>
+    /// Tries to perform a read operation using the connection to check whether its data source
+    /// is a valid SQLite database file or if the the database file was successfully decrypted.
+    /// 
+    /// <seealso href="https://www.zetetic.net/sqlcipher/sqlcipher-api/#PRAGMA_key" />
+    /// </summary>
+    /// <param name="connection">The connection to be tested.</param>
+    /// <returns>False if the read operation throws <see cref="SqliteException" /> with SQLite error code 26 (SQLITE_NOTADB), true otherwise.</returns>
     public static async Task<bool> TestAsync(this SqliteConnection connection)
     {
         try 
