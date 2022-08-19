@@ -15,15 +15,16 @@ jobs:
       uses: actions/setup-dotnet@v2
       with:
         dotnet-version: 6.0.x
+        source-url: https://nuget.pkg.github.com/m0glan/index.json
+        env:
+          NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
       run: dotnet build --no-restore
     - name: Test
       run: dotnet test --no-build --verbosity normal
+    - name: Pack
+      run: dotnet pack M0glan.Sqlite.Encryption/M0glan.Sqlite.Encryption.csproj -c Release
     - name: Publish
-      uses: brandedoutcast/publish-nuget@v2.5.2
-      with:
-          PROJECT_FILE_PATH: M0glan.Sqlite.Encryption/M0glan.Sqlite.Encryption.csproj
-          NUGET_SOURCE: https://nuget.pkg.github.com/m0glan/index.json
-          NUGET_KEY: ${{secrets.GITHUB_TOKEN}}
+      run: dotnet nuget push **/*.nupkg --skip-duplicate --source
